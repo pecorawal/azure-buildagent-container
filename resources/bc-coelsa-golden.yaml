@@ -1,0 +1,34 @@
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: golden-coelsa-dotnet
+  namespace: coelsa-golden
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'golden-coelsa-dotnet:6.0'
+  strategy:
+    type: Docker
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        namespace: openshift
+        name: 'dotnet:6.0'
+      env:
+        - name: SSL_CERT_FILE
+          value: /opt/app-root/ssl_dir/ca-bundle.crt
+        - name: SSL_CERT_DIR
+          value: /dev/null
+  source:
+    dockerfile: |
+      FROM registry.access.redhat.com/ubi8/dotnet-60:latest
+      
+      RUN mkdir -p /opt/app-root/ssl_dir
+      COPY --chown=1001:0 .ssl/ca-bundle.crt /opt/app-root/ssl_dir/ca-bundle.crt
+      
+      USER 1001
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+

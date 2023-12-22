@@ -11,7 +11,7 @@ You will need the following:
 ### 1. Clone this repository
 
 ```
-$ git clone https://github.com/kevchu3/azure-buildagent-container.git
+$ git clone https://github.com/pecorawal/azure-buildagent-container.git
 ```
 
 ### 2. Set up a Personal Access Token
